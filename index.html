@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ร้านไฟล์ลายเสื้อพิมพ์ AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-primary:#232A3D;
+  --c-accent:#E3A23A;
+  --c-accent2:#2A9D8F;
+  --c-cta:#C1443B;
+  --c-bg:#F7F4EC;
+  --c-card:#FFFFFF;
+  --c-text:#232220;
+  --c-text-soft:#6B6A64;
+  --c-border:#E4DFD1;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Sarabun',sans-serif;background:var(--c-bg);color:var(--c-text);}
+h1,h2,h3,.display{font-family:'Kanit',sans-serif;}
+img{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px;}
+
+/* header */
+header.site-header{position:sticky;top:0;z-index:40;background:var(--c-primary);color:#fff;}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;max-width:1180px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.brand img{height:42px;width:42px;object-fit:cover;border-radius:10px;background:#fff;}
+.brand-name{font-family:'Kanit',sans-serif;font-weight:600;font-size:19px;letter-spacing:.2px;}
+.login-box{display:flex;align-items:center;gap:8px;}
+.login-box input{border:none;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:13px;width:170px;}
+.login-box button, .pill-btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:500;}
+.login-box button:hover, .pill-btn:hover{background:rgba(255,255,255,.24);}
+.admin-badge{background:var(--c-accent);color:#3a2705;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;}
+
+nav.site-nav{background:#1B2030;overflow-x:auto;}
+nav.site-nav .wrap{display:flex;gap:4px;padding:0 20px;}
+nav.site-nav button{background:none;border:none;color:#C9CBD6;padding:13px 16px;font-size:14.5px;font-weight:500;white-space:nowrap;border-bottom:3px solid transparent;}
+nav.site-nav button.active{color:#fff;border-bottom-color:var(--c-accent);}
+nav.site-nav button:hover{color:#fff;}
+
+/* color deck - signature strip */
+.color-deck{background:#fff;border-bottom:1px solid var(--c-border);}
+.color-deck .wrap{display:flex;align-items:center;gap:10px;padding:12px 20px;overflow-x:auto;}
+.color-deck .label{font-size:13px;color:var(--c-text-soft);white-space:nowrap;flex-shrink:0;}
+.swatch{display:flex;align-items:center;gap:6px;border:1.5px solid var(--c-border);border-radius:20px;padding:5px 12px 5px 6px;background:#fff;flex-shrink:0;font-size:13px;}
+.swatch.active{border-color:var(--c-primary);background:#F1EFE6;}
+.swatch .dot{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.15);}
+.swatch-clear{border:none;background:none;color:var(--c-cta);font-size:13px;text-decoration:underline;flex-shrink:0;}
+
+main{min-height:60vh;padding:28px 0 60px;}
+
+/* hero tiles */
+.hero-tiles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:36px;}
+.hero-tile{position:relative;border-radius:18px;overflow:hidden;height:200px;display:flex;align-items:flex-end;padding:20px;color:#fff;font-family:'Kanit',sans-serif;font-weight:600;font-size:22px;}
+.hero-tile.thai{background:linear-gradient(180deg,rgba(35,42,61,.15),rgba(35,42,61,.85)),var(--c-cta);}
+.hero-tile.sport{background:linear-gradient(180deg,rgba(35,42,61,.15),rgba(35,42,61,.85)),var(--c-accent2);}
+.hero-tile span{position:relative;z-index:2;}
+.hero-tile small{display:block;font-family:'Sarabun';font-weight:400;font-size:13px;opacity:.85;margin-bottom:4px;}
+
+.section-title{font-size:20px;font-weight:600;margin:0 0 16px;display:flex;align-items:center;gap:8px;}
+.section-title .tag{background:var(--c-accent);color:#3a2705;font-size:12px;padding:3px 10px;border-radius:20px;font-family:'Sarabun';font-weight:600;}
+
+/* product grid */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+.product-card{background:var(--c-card);border:1px solid var(--c-border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;}
+.product-img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#eee;}
+.product-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;gap:6px;}
+.product-name{font-weight:600;font-size:15px;font-family:'Kanit';}
+.product-meta{font-size:12.5px;color:var(--c-text-soft);}
+.product-price{font-size:17px;font-weight:700;color:var(--c-cta);font-family:'Kanit';}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+.chip{font-size:11px;padding:3px 9px;border-radius:20px;background:#F1EFE6;color:var(--c-text-soft);display:flex;align-items:center;gap:4px;}
+.chip .dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.15);}
+.order-btn{margin-top:8px;background:var(--c-cta);color:#fff;border:none;border-radius:9px;padding:9px;font-weight:600;font-size:13.5px;}
+.admin-mini-actions{display:flex;gap:6px;margin-top:4px;}
+.admin-mini-actions button{flex:1;font-size:12px;padding:6px;border-radius:7px;border:1px solid var(--c-border);background:#fff;}
+
+.empty-note{color:var(--c-text-soft);font-size:14px;padding:30px 0;text-align:center;}
+
+/* floating order button */
+.float-order{position:fixed;right:22px;bottom:22px;z-index:50;background:var(--c-cta);color:#fff;border:none;border-radius:30px;padding:14px 20px;font-weight:600;font-size:14.5px;box-shadow:0 6px 18px rgba(0,0,0,.22);display:flex;align-items:center;gap:8px;}
+
+/* simple pages */
+.page-block{max-width:820px;}
+.page-block h2{font-size:23px;margin-bottom:14px;}
+.page-block p{line-height:1.8;white-space:pre-wrap;font-size:15px;}
+.page-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px;}
+.page-images img{border-radius:12px;border:1px solid var(--c-border);}
+
+/* admin panel */
+.admin-panel{background:#fff;border:1px solid var(--c-border);border-radius:16px;padding:20px;margin-bottom:30px;}
+.admin-panel h3{margin:0 0 14px;font-size:17px;}
+.admin-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.admin-tabs button{border:1px solid var(--c-border);background:#F7F4EC;padding:8px 14px;border-radius:9px;font-size:13.5px;}
+.admin-tabs button.active{background:var(--c-primary);color:#fff;border-color:var(--c-primary);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-grid.full{grid-template-columns:1fr;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:12.5px;color:var(--c-text-soft);font-weight:500;}
+.field input[type=text],.field input[type=number],.field input[type=url],.field select,.field textarea{
+  border:1px solid var(--c-border);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:14px;background:#FBFAF6;
+}
+.field textarea{resize:vertical;min-height:70px;}
+.color-pick-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.color-pick-grid label{display:flex;align-items:center;gap:5px;border:1px solid var(--c-border);border-radius:20px;padding:5px 10px;font-size:12.5px;cursor:pointer;}
+.color-pick-grid input{margin:0;}
+.save-btn{background:var(--c-primary);color:#fff;border:none;border-radius:9px;padding:11px 22px;font-weight:600;font-size:14px;margin-top:14px;}
+.theme-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.theme-row label{font-size:13.5px;width:150px;color:var(--c-text-soft);}
+.theme-row input[type=color]{width:50px;height:34px;border:none;border-radius:6px;padding:0;background:none;}
+.product-admin-list{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.product-admin-row{display:flex;align-items:center;gap:10px;border:1px solid var(--c-border);border-radius:10px;padding:8px 10px;}
+.product-admin-row img{width:42px;height:42px;border-radius:6px;object-fit:cover;background:#eee;}
+.product-admin-row .grow{flex:1;font-size:13px;}
+.product-admin-row .grow b{font-family:'Kanit';font-size:13.5px;}
+.small-btn{font-size:12px;padding:6px 10px;border-radius:7px;border:1px solid var(--c-border);background:#fff;}
+.hint{font-size:12px;color:var(--c-text-soft);margin-top:6px;}
+
+footer.site-footer{background:var(--c-primary);color:#D9DAE2;padding:26px 20px;margin-top:20px;}
+footer.site-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;}
+
+@media(max-width:640px){
+  .hero-tiles{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .login-box input{width:120px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <div class="brand" onclick="goPage('home')">
+      <img id="logoImg" src="https://placehold.co/80x80/E3A23A/232A3D?text=LOGO" alt="โลโก้ร้าน">
+      <span class="brand-name" id="shopNameLbl">ร้านลายเสื้อ AI</span>
+    </div>
+    <div class="login-box" id="loginArea"></div>
+  </div>
+  <nav class="site-nav">
+    <div class="wrap" id="navBar"></div>
+  </nav>
+  <div class="color-deck">
+    <div class="wrap" id="colorDeck"></div>
+  </div>
+</header>
+
+<main class="wrap" id="mainArea"></main>
+
+<button class="float-order" id="floatOrderBtn">💬 สั่งซื้อ / แชท</button>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span id="footerTextLbl">© ร้านลายเสื้อ AI</span>
+    <span>ติดต่อทางเพจ Facebook เพื่อสั่งซื้อ</span>
+  </div>
+</footer>
+
+<script>
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbwJhd2q5k2fgNzkOPIKBp2HRqYPV4pjB5rrScxsowDTXhiN6GPZmCpZmJPNa7ZKHq89/exec';
+const ADMIN_EMAIL = 'kook45120@gmail.com';
+
+const COLOR_MASTER = [
+  {key:'red',name:'แดง',hex:'#C1443B'},
+  {key:'yellow',name:'เหลือง',hex:'#E8C33D'},
+  {key:'green',name:'เขียว',hex:'#3F8F5E'},
+  {key:'black',name:'ดำ',hex:'#1C1B1A'},
+  {key:'white',name:'ขาว',hex:'#FFFFFF'},
+  {key:'blue',name:'น้ำเงิน',hex:'#2A4D8F'},
+  {key:'skyblue',name:'ฟ้า',hex:'#4FA8D8'},
+  {key:'orange',name:'ส้ม',hex:'#E07B2A'},
+  {key:'purple',name:'ม่วง',hex:'#7A4FA0'},
+  {key:'pink',name:'ชมพู',hex:'#E38AA8'},
+  {key:'gray',name:'เทา',hex:'#8A8A85'},
+  {key:'brown',name:'น้ำตาล',hex:'#6B4A2F'},
+  {key:'cream',name:'ครีม',hex:'#EDE3C8'},
+  {key:'gold',name:'ทอง',hex:'#C9A227'},
+  {key:'silver',name:'เงิน',hex:'#B9BDC1'}
+];
+
+const CATEGORIES = [
+  {key:'thai', label:'ไฟล์ลายไทย'},
+  {key:'sport', label:'ไฟล์ลายกีฬา Sport'},
+  {key:'agency', label:'ไฟล์ลายหน่วยงาน'}
+];
+
+const PAGES = [
+  {key:'home', label:'หน้าแรก'},
+  {key:'thai', label:'ไฟล์ลายไทย'},
+  {key:'sport', label:'ไฟล์ลายกีฬา Sport'},
+  {key:'agency', label:'ไฟล์ลายหน่วยงาน'},
+  {key:'howto', label:'วิธีการสั่งซื้อ'},
+  {key:'contact', label:'ติดต่อเรา'}
+];
+
+function defaultData(){
+  return {
+    theme:{primary:'#232A3D',accent:'#E3A23A',accent2:'#2A9D8F',cta:'#C1443B',bg:'#F7F4EC'},
+    logoUrl:'https://placehold.co/80x80/E3A23A/232A3D?text=LOGO',
+    shopName:'ร้านลายเสื้อ AI',
+    footerText:'© ร้านลายเสื้อ AI',
+    facebookLink:'https://www.facebook.com/profile.php?id=61586449452970',
+    pages:{
+      howto:{text:'1. เลือกลายที่ต้องการจากหน้าเว็บ\n2. กดปุ่มสั่งซื้อ ระบบจะพาไปที่แชทเพจ Facebook\n3. แจ้งรหัสสินค้าและสีที่ต้องการกับแอดมิน\n4. ชำระเงินตามที่แอดมินแจ้ง\n5. รับไฟล์งานได้ทันทีหลังยืนยันการชำระเงิน', images:[]},
+      contact:{text:'ติดต่อสอบถามหรือสั่งซื้อได้ทางเพจ Facebook ของร้าน\nเปิดทำการทุกวัน 9:00 - 21:00 น.', images:[]}
+    },
+    products:[
+      {id:'p1', name:'ลายไทยกนกเปลว', code:'TH-001', price:150, category:'thai', colors:['red','gold','black'], image:'https://placehold.co/500x500/C1443B/ffffff?text=ลายไทย+001'},
+      {id:'p2', name:'ลายเสือกีฬาสปอร์ต', code:'SP-001', price:120, category:'sport', colors:['blue','white','skyblue'], image:'https://placehold.co/500x500/2A9D8F/ffffff?text=SPORT+001'},
+      {id:'p3', name:'ลายตราหน่วยงานราชการ', code:'AG-001', price:180, category:'agency', colors:['green','gold'], image:'https://placehold.co/500x500/3F8F5E/ffffff?text=AGENCY+001'}
+    ]
+  };
+}
+
+let site = null;
+let isAdmin = false;
+let currentEmail = '';
+let currentPage = 'home';
+let activeColors = [];
+let adminTab = 'products';
+let editingProductId = null;
+let apiConnected = false;
+
+function usingSheets(){
+  return !!SHEETS_API_URL && SHEETS_API_URL.indexOf('script.google.com') !== -1 && SHEETS_API_URL.indexOf('PASTE_') === -1;
+}
+
+function driveDirectLink(url){
+  if(!url) return url;
+  let m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(m) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+  m = url.match(/[?&]id=([^&]+)/);
+  if(m && url.indexOf('drive.google.com') !== -1) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+  return url;
+}
+
+async function apiGet(){
+  const res = await fetch(SHEETS_API_URL, {method:'GET'});
+  if(!res.ok) throw new Error('bad response');
+  return await res.json();
+}
+async function apiPost(payload){
+  const res = await fetch(SHEETS_API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok) throw new Error('bad response');
+  return await res.json();
+}
+
+function mapServerData(data){
+  const cfg = data.config || {};
+  const def = defaultData();
+  return {
+    theme:{
+      primary: cfg.primary || def.theme.primary,
+      accent: cfg.accent || def.theme.accent,
+      accent2: cfg.accent2 || def.theme.accent2,
+      cta: cfg.cta || def.theme.cta,
+      bg: cfg.bg || def.theme.bg
+    },
+    logoUrl: cfg.logoUrl || def.logoUrl,
+    shopName: cfg.shopName || def.shopName,
+    footerText: cfg.footerText !== undefined && cfg.footerText !== '' ? cfg.footerText : def.footerText,
+    facebookLink: cfg.facebookLink || def.facebookLink,
+    pages:{
+      howto:{
+        text: cfg.howtoText !== undefined && cfg.howtoText !== '' ? cfg.howtoText : def.pages.howto.text,
+        images: cfg.howtoImages ? String(cfg.howtoImages).split(',').map(s=>s.trim()).filter(Boolean) : def.pages.howto.images
+      },
+      contact:{
+        text: cfg.contactText !== undefined && cfg.contactText !== '' ? cfg.contactText : def.pages.contact.text,
+        images: cfg.contactImages ? String(cfg.contactImages).split(',').map(s=>s.trim()).filter(Boolean) : def.pages.contact.images
+      }
+    },
+    products: (data.products && data.products.length) ? data.products : def.products
+  };
+}
+
+async function loadSite(){
+  if(usingSheets()){
+    try{
+      const data = await apiGet();
+      site = mapServerData(data);
+      apiConnected = true;
+    }catch(e){
+      console.error(e);
+      site = defaultData();
+      apiConnected = false;
+    }
+  } else {
+    site = defaultData();
+    apiConnected = false;
+  }
+  try{
+    const em = localStorage.getItem('admin-email');
+    if(em){ currentEmail = em; if(em.toLowerCase() === ADMIN_EMAIL) isAdmin = true; }
+  }catch(e){}
+}
+
+function refreshFromServer(data){
+  site = mapServerData(data);
+  applyTheme();
+  render();
+}
+
+async function apiSaveProduct(product){
+  product = Object.assign({}, product, {image: driveDirectLink(product.image)});
+  if(!usingSheets()){
+    const idx = site.products.findIndex(p=>p.id===product.id);
+    if(idx>-1) site.products[idx] = product; else site.products.push(product);
+    applyTheme(); render();
+    return true;
+  }
+  try{
+    const data = await apiPost({action:'saveProduct', product});
+    refreshFromServer(data);
+    return true;
+  }catch(e){
+    console.error(e);
+    alert('บันทึกไปยัง Google Sheets ไม่สำเร็จ กรุณาตรวจสอบลิงก์ Apps Script และการเชื่อมต่ออินเทอร์เน็ต');
+    return false;
+  }
+}
+
+async function apiDeleteProduct(id){
+  if(!usingSheets()){
+    site.products = site.products.filter(x=>x.id!==id);
+    applyTheme(); render();
+    return;
+  }
+  try{
+    const data = await apiPost({action:'deleteProduct', id});
+    refreshFromServer(data);
+  }catch(e){
+    console.error(e);
+    alert('ลบสินค้าไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อ Google Sheets');
+  }
+}
+
+async function apiSaveConfig(configObj){
+  if(!usingSheets()){
+    if(configObj.primary) site.theme.primary = configObj.primary;
+    if(configObj.accent) site.theme.accent = configObj.accent;
+    if(configObj.accent2) site.theme.accent2 = configObj.accent2;
+    if(configObj.cta) site.theme.cta = configObj.cta;
+    if(configObj.bg) site.theme.bg = configObj.bg;
+    if(configObj.logoUrl) site.logoUrl = driveDirectLink(configObj.logoUrl);
+    if(configObj.shopName) site.shopName = configObj.shopName;
+    if(configObj.footerText !== undefined) site.footerText = configObj.footerText;
+    if(configObj.facebookLink) site.facebookLink = configObj.facebookLink;
+    if(configObj.howtoText !== undefined) site.pages.howto.text = configObj.howtoText;
+    if(configObj.howtoImages !== undefined) site.pages.howto.images = configObj.howtoImages.split(',').map(s=>s.trim()).filter(Boolean);
+    if(configObj.contactText !== undefined) site.pages.contact.text = configObj.contactText;
+    if(configObj.contactImages !== undefined) site.pages.contact.images = configObj.contactImages.split(',').map(s=>s.trim()).filter(Boolean);
+    applyTheme(); render();
+    return true;
+  }
+  try{
+    const data = await apiPost({action:'saveConfig', config: configObj});
+    refreshFromServer(data);
+    return true;
+  }catch(e){
+    console.error(e);
+    alert('บันทึกไปยัง Google Sheets ไม่สำเร็จ กรุณาตรวจสอบลิงก์ Apps Script และการเชื่อมต่ออินเทอร์เน็ต');
+    return false;
+  }
+}
+
+function applyTheme(){
+  const t = site.theme;
+  document.documentElement.style.setProperty('--c-primary', t.primary);
+  document.documentElement.style.setProperty('--c-accent', t.accent);
+  document.documentElement.style.setProperty('--c-accent2', t.accent2);
+  document.documentElement.style.setProperty('--c-cta', t.cta);
+  document.documentElement.style.setProperty('--c-bg', t.bg);
+  document.getElementById('logoImg').src = site.logoUrl;
+  document.getElementById('shopNameLbl').textContent = site.shopName;
+  document.getElementById('footerTextLbl').textContent = site.footerText;
+  document.getElementById('floatOrderBtn').onclick = () => window.open(site.facebookLink, '_blank');
+}
+
+function goPage(p){ currentPage = p; adminTab = 'products'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function colorName(key){ const c = COLOR_MASTER.find(c=>c.key===key); return c ? c.name : key; }
+function colorHex(key){ const c = COLOR_MASTER.find(c=>c.key===key); return c ? c.hex : '#ccc'; }
+
+function toggleColorFilter(key){
+  if(activeColors.includes(key)) activeColors = activeColors.filter(k=>k!==key);
+  else activeColors.push(key);
+  render();
+}
+function clearColorFilter(){ activeColors = []; render(); }
+
+async function doLogin(){
+  const val = document.getElementById('emailInput').value.trim();
+  if(!val){ return; }
+  currentEmail = val;
+  isAdmin = val.toLowerCase() === ADMIN_EMAIL;
+  try{ localStorage.setItem('admin-email', val); }catch(e){}
+  render();
+}
+async function doLogout(){
+  currentEmail = ''; isAdmin = false;
+  try{ localStorage.removeItem('admin-email'); }catch(e){}
+  render();
+}
+
+function renderLogin(){
+  const box = document.getElementById('loginArea');
+  box.innerHTML = '';
+  if(currentEmail){
+    const badge = document.createElement('span');
+    if(isAdmin){
+      badge.className = 'admin-badge';
+      badge.textContent = 'โหมดแอดมิน';
+    } else {
+      badge.className = 'pill-btn';
+      badge.style.cursor='default';
+      badge.textContent = 'ผู้เยี่ยมชม: ' + currentEmail;
+    }
+    const out = document.createElement('button');
+    out.className = 'pill-btn';
+    out.textContent = 'ออกจากระบบ';
+    out.onclick = doLogout;
+    box.appendChild(badge);
+    box.appendChild(out);
+  } else {
+    const input = document.createElement('input');
+    input.type = 'text'; input.id = 'emailInput'; input.placeholder = 'อีเมล Gmail (ไม่บังคับ)';
+    const btn = document.createElement('button');
+    btn.textContent = 'เข้าสู่ระบบ';
+    btn.onclick = doLogin;
+    box.appendChild(input); box.appendChild(btn);
+  }
+}
+
+function renderNav(){
+  const nav = document.getElementById('navBar');
+  nav.innerHTML = '';
+  PAGES.forEach(p=>{
+    const b = document.createElement('button');
+    b.textContent = p.label;
+    if(p.key===currentPage) b.className='active';
+    b.onclick = ()=>goPage(p.key);
+    nav.appendChild(b);
+  });
+  if(isAdmin){
+    const b = document.createElement('button');
+    b.textContent = '⚙ จัดการเว็บไซต์';
+    if(currentPage==='admin') b.className='active';
+    b.onclick = ()=>{ currentPage='admin'; render(); };
+    nav.appendChild(b);
+  }
+}
+
+function renderColorDeck(){
+  const deck = document.getElementById('colorDeck');
+  deck.innerHTML = '';
+  const showDeck = ['home','thai','sport','agency'].includes(currentPage);
+  deck.parentElement.parentElement.style.display = showDeck ? '' : 'none';
+  if(!showDeck) return;
+  const label = document.createElement('span');
+  label.className='label'; label.textContent='กรองตามสี:';
+  deck.appendChild(label);
+  COLOR_MASTER.forEach(c=>{
+    const s = document.createElement('div');
+    s.className = 'swatch' + (activeColors.includes(c.key)?' active':'');
+    s.innerHTML = `<span class="dot" style="background:${c.hex}"></span>${c.name}`;
+    s.onclick = ()=>toggleColorFilter(c.key);
+    deck.appendChild(s);
+  });
+  if(activeColors.length){
+    const clr = document.createElement('button');
+    clr.className='swatch-clear'; clr.textContent='ล้างตัวกรอง';
+    clr.onclick = clearColorFilter;
+    deck.appendChild(clr);
+  }
+}
+
+function productCard(p){
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  const cat = CATEGORIES.find(c=>c.key===p.category);
+  card.innerHTML = `
+    <img class="product-img" src="${p.image}" alt="${p.name}">
+    <div class="product-body">
+      <div class="product-name">${p.name}</div>
+      <div class="product-meta">รหัสสินค้า: ${p.code} · ${cat?cat.label:''}</div>
+      <div class="product-price">${Number(p.price).toLocaleString()} บาท</div>
+      <div class="tag-row">${p.colors.map(k=>`<span class="chip"><span class="dot" style="background:${colorHex(k)}"></span>${colorName(k)}</span>`).join('')}</div>
+      <button class="order-btn">สั่งซื้อทางแชท</button>
+    </div>`;
+  card.querySelector('.order-btn').onclick = ()=>window.open(site.facebookLink,'_blank');
+  if(isAdmin){
+    const actions = document.createElement('div');
+    actions.className = 'admin-mini-actions';
+    const editBtn = document.createElement('button'); editBtn.textContent='แก้ไข';
+    editBtn.onclick = ()=>{ editingProductId = p.id; currentPage='admin'; adminTab='products'; render(); };
+    const delBtn = document.createElement('button'); delBtn.textContent='ลบ';
+    delBtn.onclick = async ()=>{ if(confirm('ลบสินค้านี้หรือไม่?')){ await apiDeleteProduct(p.id); } };
+    actions.appendChild(editBtn); actions.appendChild(delBtn);
+    card.querySelector('.product-body').appendChild(actions);
+  }
+  return card;
+}
+
+function filteredProducts(category){
+  return site.products.filter(p=>{
+    if(category && p.category!==category) return false;
+    if(activeColors.length && !p.colors.some(c=>activeColors.includes(c))) return false;
+    return true;
+  });
+}
+
+function renderGrid(container, list){
+  container.innerHTML='';
+  if(!list.length){
+    container.innerHTML = '<div class="empty-note">ยังไม่มีสินค้าในหมวดนี้</div>';
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'product-grid';
+  list.forEach(p=>grid.appendChild(productCard(p)));
+  container.appendChild(grid);
+}
+
+function renderHome(main){
+  main.innerHTML = `
+    <div class="hero-tiles">
+      <div class="hero-tile thai" id="tileThai"><span><small>หมวดหมู่</small>ลายไทย</span></div>
+      <div class="hero-tile sport" id="tileSport"><span><small>หมวดหมู่</small>กีฬา Sport</span></div>
+    </div>
+    <div class="section-title">สินค้าทั้งหมด <span class="tag">${site.products.length} รายการ</span></div>
+    <div id="homeGrid"></div>
+  `;
+  main.querySelector('#tileThai').onclick = ()=>goPage('thai');
+  main.querySelector('#tileSport').onclick = ()=>goPage('sport');
+  renderGrid(main.querySelector('#homeGrid'), filteredProducts(null));
+}
+
+function renderCategoryPage(main, catKey){
+  const cat = CATEGORIES.find(c=>c.key===catKey);
+  main.innerHTML = `<div class="section-title">${cat.label}</div><div id="catGrid"></div>`;
+  renderGrid(main.querySelector('#catGrid'), filteredProducts(catKey));
+}
+
+function renderTextPage(main, key, title){
+  const pg = site.pages[key];
+  main.innerHTML = `
+    <div class="page-block">
+      <h2>${title}</h2>
+      <p>${pg.text}</p>
+      <div class="page-images">${pg.images.map(u=>`<img src="${u}">`).join('')}</div>
+    </div>`;
+}
+
+/* ---------------- ADMIN ---------------- */
+function renderAdmin(main){
+  main.innerHTML = '';
+  const panel = document.createElement('div');
+  panel.className = 'admin-panel';
+  const statusHtml = apiConnected
+    ? '<div style="background:#EAF3DE;color:#173404;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px">เชื่อมต่อกับฐานข้อมูล Google Sheets แล้ว ผู้เข้าชมทุกคนจะเห็นข้อมูลชุดเดียวกัน</div>'
+    : '<div style="background:#FCEBEB;color:#501313;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px">ยังไม่ได้เชื่อมต่อกับ Google Sheets การแก้ไขตอนนี้จะเห็นเฉพาะเบราว์เซอร์นี้ชั่วคราว ดูวิธีตั้งค่าใน README.md</div>';
+  panel.innerHTML = `<h3>จัดการเว็บไซต์ (โหมดแอดมิน)</h3>
+    ${statusHtml}
+    <div class="admin-tabs">
+      <button data-t="products" class="${adminTab==='products'?'active':''}">สินค้า</button>
+      <button data-t="design" class="${adminTab==='design'?'active':''}">รูปแบบเว็บไซต์</button>
+      <button data-t="content" class="${adminTab==='content'?'active':''}">เนื้อหาหน้าเว็บ</button>
+    </div>
+    <div id="adminBody"></div>`;
+  main.appendChild(panel);
+  panel.querySelectorAll('.admin-tabs button').forEach(b=>{
+    b.onclick = ()=>{ adminTab = b.dataset.t; editingProductId = null; render(); };
+  });
+  const body = panel.querySelector('#adminBody');
+  if(adminTab==='products') renderAdminProducts(body);
+  if(adminTab==='design') renderAdminDesign(body);
+  if(adminTab==='content') renderAdminContent(body);
+}
+
+function renderAdminProducts(body){
+  const editing = editingProductId ? site.products.find(p=>p.id===editingProductId) : null;
+  body.innerHTML = `
+    <div class="form-grid">
+      <div class="field"><label>ชื่อสินค้า</label><input type="text" id="f_name" value="${editing?editing.name:''}"></div>
+      <div class="field"><label>รหัสสินค้า</label><input type="text" id="f_code" value="${editing?editing.code:''}"></div>
+      <div class="field"><label>ราคา (บาท)</label><input type="number" id="f_price" value="${editing?editing.price:''}"></div>
+      <div class="field"><label>หมวดหมู่</label>
+        <select id="f_category">${CATEGORIES.map(c=>`<option value="${c.key}" ${editing&&editing.category===c.key?'selected':''}>${c.label}</option>`).join('')}</select>
+      </div>
+      <div class="field" style="grid-column:1/-1"><label>ลิงก์รูปภาพสินค้า (รองรับลิงก์แชร์ Google Drive)</label><input type="url" id="f_image" value="${editing?editing.image:''}" placeholder="https://..."></div>
+    </div>
+    <div class="field" style="margin-top:12px"><label>สีที่มี (เลือกได้หลายสี)</label>
+      <div class="color-pick-grid">${COLOR_MASTER.map(c=>`<label><input type="checkbox" value="${c.key}" ${editing&&editing.colors.includes(c.key)?'checked':''}><span class="dot" style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${c.hex};border:1px solid rgba(0,0,0,.2)"></span>${c.name}</label>`).join('')}</div>
+    </div>
+    <button class="save-btn" id="saveProdBtn">${editing?'บันทึกการแก้ไข':'เพิ่มสินค้าใหม่'}</button>
+    ${editing?'<button class="save-btn" id="cancelEditBtn" style="background:#8A8A85;margin-left:8px">ยกเลิก</button>':''}
+    <div class="product-admin-list" id="prodList"></div>
+  `;
+  body.querySelector('#saveProdBtn').onclick = async ()=>{
+    const name = document.getElementById('f_name').value.trim();
+    const code = document.getElementById('f_code').value.trim();
+    const price = Number(document.getElementById('f_price').value) || 0;
+    const category = document.getElementById('f_category').value;
+    const image = document.getElementById('f_image').value.trim() || 'https://placehold.co/500x500?text=สินค้า';
+    const colors = Array.from(body.querySelectorAll('.color-pick-grid input:checked')).map(i=>i.value);
+    if(!name || !code){ alert('กรุณากรอกชื่อสินค้าและรหัสสินค้า'); return; }
+    const product = { id: editing ? editing.id : ('p'+Date.now()), name, code, price, category, image, colors };
+    const ok = await apiSaveProduct(product);
+    if(ok){ editingProductId = null; render(); }
+  };
+  if(editing){
+    body.querySelector('#cancelEditBtn').onclick = ()=>{ editingProductId=null; render(); };
+  }
+  const list = body.querySelector('#prodList');
+  site.products.forEach(p=>{
+    const row = document.createElement('div');
+    row.className='product-admin-row';
+    row.innerHTML = `<img src="${p.image}"><div class="grow"><b>${p.name}</b><br>${p.code} · ${p.price} บาท</div>`;
+    const editBtn = document.createElement('button'); editBtn.className='small-btn'; editBtn.textContent='แก้ไข';
+    editBtn.onclick = ()=>{ editingProductId=p.id; render(); };
+    const delBtn = document.createElement('button'); delBtn.className='small-btn'; delBtn.textContent='ลบ';
+    delBtn.onclick = async ()=>{ if(confirm('ลบสินค้านี้หรือไม่?')){ await apiDeleteProduct(p.id); } };
+    row.appendChild(editBtn); row.appendChild(delBtn);
+    list.appendChild(row);
+  });
+}
+
+function renderAdminDesign(body){
+  const t = site.theme;
+  body.innerHTML = `
+    <div class="theme-row"><label>สีหลัก (แถบเมนู)</label><input type="color" id="th_primary" value="${t.primary}"></div>
+    <div class="theme-row"><label>สีเน้น 1 (ลายไทย/ปุ่ม)</label><input type="color" id="th_accent" value="${t.accent}"></div>
+    <div class="theme-row"><label>สีเน้น 2 (กีฬา)</label><input type="color" id="th_accent2" value="${t.accent2}"></div>
+    <div class="theme-row"><label>สีปุ่มสั่งซื้อ</label><input type="color" id="th_cta" value="${t.cta}"></div>
+    <div class="theme-row"><label>สีพื้นหลังเว็บ</label><input type="color" id="th_bg" value="${t.bg}"></div>
+    <div class="form-grid full" style="margin-top:6px">
+      <div class="field"><label>ลิงก์โลโก้ (รองรับลิงก์แชร์ Google Drive)</label><input type="url" id="th_logo" value="${site.logoUrl}"></div>
+      <div class="field"><label>ชื่อร้าน</label><input type="text" id="th_name" value="${site.shopName}"></div>
+      <div class="field"><label>ข้อความส่วนท้ายเว็บ (Footer)</label><input type="text" id="th_footer" value="${site.footerText}"></div>
+      <div class="field"><label>ลิงก์แชท Facebook สำหรับปุ่มสั่งซื้อ</label><input type="url" id="th_fb" value="${site.facebookLink}"></div>
+    </div>
+    <button class="save-btn" id="saveDesignBtn">บันทึกรูปแบบเว็บไซต์</button>
+    <div class="hint">ใส่ลิงก์รูปภาพ (URL) ที่จบด้วยไฟล์รูป เช่น .jpg .png หรือลิงก์แชร์จาก Google Drive ก็ได้ ระบบจะแปลงให้อัตโนมัติ</div>
+  `;
+  body.querySelector('#saveDesignBtn').onclick = async ()=>{
+    const configObj = {
+      primary: document.getElementById('th_primary').value,
+      accent: document.getElementById('th_accent').value,
+      accent2: document.getElementById('th_accent2').value,
+      cta: document.getElementById('th_cta').value,
+      bg: document.getElementById('th_bg').value,
+      logoUrl: document.getElementById('th_logo').value.trim() || site.logoUrl,
+      shopName: document.getElementById('th_name').value.trim() || site.shopName,
+      footerText: document.getElementById('th_footer').value.trim(),
+      facebookLink: document.getElementById('th_fb').value.trim() || site.facebookLink
+    };
+    const ok = await apiSaveConfig(configObj);
+    if(ok){ adminTab='design'; render(); }
+  };
+}
+
+function renderAdminContent(body){
+  const howto = site.pages.howto, contact = site.pages.contact;
+  body.innerHTML = `
+    <h3 style="font-size:15px;margin-top:4px">หน้า "วิธีการสั่งซื้อ"</h3>
+    <div class="field"><label>ข้อความ</label><textarea id="c_howto_text">${howto.text}</textarea></div>
+    <div class="field" style="margin-top:8px"><label>ลิงก์รูปภาพประกอบ (คั่นด้วยเครื่องหมาย , )</label><input type="text" id="c_howto_images" value="${howto.images.join(', ')}"></div>
+    <hr style="margin:22px 0;border:none;border-top:1px solid var(--c-border)">
+    <h3 style="font-size:15px">หน้า "ติดต่อเรา"</h3>
+    <div class="field"><label>ข้อความ</label><textarea id="c_contact_text">${contact.text}</textarea></div>
+    <div class="field" style="margin-top:8px"><label>ลิงก์รูปภาพประกอบ (คั่นด้วยเครื่องหมาย , )</label><input type="text" id="c_contact_images" value="${contact.images.join(', ')}"></div>
+    <button class="save-btn" id="saveContentBtn">บันทึกเนื้อหา</button>
+  `;
+  body.querySelector('#saveContentBtn').onclick = async ()=>{
+    const configObj = {
+      howtoText: document.getElementById('c_howto_text').value,
+      howtoImages: document.getElementById('c_howto_images').value.split(',').map(s=>s.trim()).filter(Boolean).join(','),
+      contactText: document.getElementById('c_contact_text').value,
+      contactImages: document.getElementById('c_contact_images').value.split(',').map(s=>s.trim()).filter(Boolean).join(',')
+    };
+    const ok = await apiSaveConfig(configObj);
+    if(ok){ adminTab='content'; render(); }
+  };
+}
+
+function render(){
+  renderLogin();
+  renderNav();
+  renderColorDeck();
+  const main = document.getElementById('mainArea');
+  if(currentPage==='home') renderHome(main);
+  else if(currentPage==='thai') renderCategoryPage(main,'thai');
+  else if(currentPage==='sport') renderCategoryPage(main,'sport');
+  else if(currentPage==='agency') renderCategoryPage(main,'agency');
+  else if(currentPage==='howto') renderTextPage(main,'howto','วิธีการสั่งซื้อ');
+  else if(currentPage==='contact') renderTextPage(main,'contact','ติดต่อเรา');
+  else if(currentPage==='admin' && isAdmin) renderAdmin(main);
+  else { currentPage='home'; renderHome(main); }
+}
+
+(async function init(){
+  document.getElementById('mainArea').innerHTML = '<div class="empty-note">กำลังโหลดข้อมูลร้านค้า...</div>';
+  await loadSite();
+  applyTheme();
+  render();
+})();
+</script>
+</body>
+</html>
