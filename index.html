@@ -125,14 +125,19 @@ main{min-height:60vh;padding:28px 0 60px;}
 .hint{font-size:12px;color:var(--c-text-soft);margin-top:6px;}
 
 .detail-overlay{position:fixed;inset:0;background:rgba(20,18,15,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
-.detail-card{background:#fff;border-radius:18px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;display:flex;flex-wrap:wrap;}
-.detail-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:15px;z-index:2;}
-.detail-img{width:100%;max-width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:18px 18px 0 0;flex:1 1 260px;}
-.detail-body{padding:20px;flex:1 1 260px;}
-.detail-name{font-family:'Kanit';font-weight:600;font-size:20px;margin-bottom:6px;}
-@media(min-width:520px){
+.detail-card{background:#fff;border-radius:18px;max-width:920px;width:100%;max-height:92vh;overflow-y:auto;position:relative;display:flex;flex-wrap:wrap;}
+.detail-close{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:17px;z-index:2;}
+.detail-img{width:100%;max-width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:18px 18px 0 0;flex:1 1 380px;}
+.detail-body{padding:32px;flex:1 1 340px;display:flex;flex-direction:column;justify-content:center;}
+.detail-name{font-family:'Kanit';font-weight:600;font-size:28px;margin-bottom:10px;}
+.detail-body .product-meta{font-size:15px;margin-bottom:4px;}
+.detail-body .product-price{font-size:26px;margin:6px 0;}
+.detail-body .tag-row{margin-top:8px;gap:8px;}
+.detail-body .chip{font-size:13px;padding:5px 12px;}
+.detail-body .order-btn{padding:14px;font-size:16px;}
+@media(min-width:640px){
   .detail-card{flex-wrap:nowrap;}
-  .detail-img{border-radius:18px 0 0 18px;width:260px;flex:0 0 260px;height:100%;}
+  .detail-img{border-radius:18px 0 0 18px;width:420px;flex:0 0 420px;height:auto;align-self:stretch;}
 }
 
 footer.site-footer{background:var(--c-primary);color:#D9DAE2;padding:26px 20px;margin-top:20px;}
