@@ -124,6 +124,17 @@ main{min-height:60vh;padding:28px 0 60px;}
 .small-btn{font-size:12px;padding:6px 10px;border-radius:7px;border:1px solid var(--c-border);background:#fff;}
 .hint{font-size:12px;color:var(--c-text-soft);margin-top:6px;}
 
+.detail-overlay{position:fixed;inset:0;background:rgba(20,18,15,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
+.detail-card{background:#fff;border-radius:18px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;display:flex;flex-wrap:wrap;}
+.detail-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:15px;z-index:2;}
+.detail-img{width:100%;max-width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:18px 18px 0 0;flex:1 1 260px;}
+.detail-body{padding:20px;flex:1 1 260px;}
+.detail-name{font-family:'Kanit';font-weight:600;font-size:20px;margin-bottom:6px;}
+@media(min-width:520px){
+  .detail-card{flex-wrap:nowrap;}
+  .detail-img{border-radius:18px 0 0 18px;width:260px;flex:0 0 260px;height:100%;}
+}
+
 footer.site-footer{background:var(--c-primary);color:#D9DAE2;padding:26px 20px;margin-top:20px;}
 footer.site-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;}
 
@@ -232,12 +243,29 @@ function usingSheets(){
   return !!SHEETS_API_URL && SHEETS_API_URL.indexOf('script.google.com') !== -1 && SHEETS_API_URL.indexOf('PASTE_') === -1;
 }
 
-function driveDirectLink(url){
-  if(!url) return url;
+function driveFileId(url){
+  if(!url) return null;
   let m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if(m) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+  if(m) return m[1];
   m = url.match(/[?&]id=([^&]+)/);
-  if(m && url.indexOf('drive.google.com') !== -1) return 'https://drive.google.com/uc?export=view&id=' + m[1];
+  if(m && url.indexOf('drive.google.com') !== -1) return m[1];
+  m = url.match(/drive\.google\.com\/thumbnail\?id=([^&]+)/);
+  if(m) return m[1];
+  m = url.match(/lh3\.googleusercontent\.com\/d\/([^=/?]+)/);
+  if(m) return m[1];
+  return null;
+}
+
+function driveDirectLink(url){
+  const id = driveFileId(url);
+  if(id) return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w1000';
+  return url;
+}
+
+function imgSrc(url){
+  if(!url) return url;
+  const id = driveFileId(url);
+  if(id) return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w1000';
   return url;
 }
 
@@ -382,7 +410,7 @@ function applyTheme(){
   document.documentElement.style.setProperty('--c-accent2', t.accent2);
   document.documentElement.style.setProperty('--c-cta', t.cta);
   document.documentElement.style.setProperty('--c-bg', t.bg);
-  document.getElementById('logoImg').src = site.logoUrl;
+  document.getElementById('logoImg').src = imgSrc(site.logoUrl);
   document.getElementById('shopNameLbl').textContent = site.shopName;
   document.getElementById('footerTextLbl').textContent = site.footerText;
   document.getElementById('floatOrderBtn').onclick = () => window.open(site.facebookLink, '_blank');
@@ -491,15 +519,17 @@ function productCard(p){
   card.className = 'product-card';
   const cat = CATEGORIES.find(c=>c.key===p.category);
   card.innerHTML = `
-    <img class="product-img" src="${p.image}" alt="${p.name}">
+    <img class="product-img" src="${imgSrc(p.image)}" alt="${p.name}" style="cursor:pointer">
     <div class="product-body">
-      <div class="product-name">${p.name}</div>
+      <div class="product-name" style="cursor:pointer">${p.name}</div>
       <div class="product-meta">รหัสสินค้า: ${p.code} · ${cat?cat.label:''}</div>
       <div class="product-price">${Number(p.price).toLocaleString()} บาท</div>
       <div class="tag-row">${p.colors.map(k=>`<span class="chip"><span class="dot" style="background:${colorHex(k)}"></span>${colorName(k)}</span>`).join('')}</div>
       <button class="order-btn">สั่งซื้อทางแชท</button>
     </div>`;
   card.querySelector('.order-btn').onclick = ()=>window.open(site.facebookLink,'_blank');
+  card.querySelector('.product-img').onclick = ()=>openProductDetail(p);
+  card.querySelector('.product-name').onclick = ()=>openProductDetail(p);
   if(isAdmin){
     const actions = document.createElement('div');
     actions.className = 'admin-mini-actions';
@@ -511,6 +541,33 @@ function productCard(p){
     card.querySelector('.product-body').appendChild(actions);
   }
   return card;
+}
+
+function openProductDetail(p){
+  const cat = CATEGORIES.find(c=>c.key===p.category);
+  const overlay = document.createElement('div');
+  overlay.className = 'detail-overlay';
+  overlay.innerHTML = `
+    <div class="detail-card">
+      <button class="detail-close" aria-label="ปิด">✕</button>
+      <img class="detail-img" src="${imgSrc(p.image)}" alt="${p.name}">
+      <div class="detail-body">
+        <div class="detail-name">${p.name}</div>
+        <div class="product-meta">รหัสสินค้า: ${p.code} · ${cat?cat.label:''}</div>
+        <div class="product-price">${Number(p.price).toLocaleString()} บาท</div>
+        <div class="tag-row">${p.colors.map(k=>`<span class="chip"><span class="dot" style="background:${colorHex(k)}"></span>${colorName(k)}</span>`).join('')}</div>
+        <button class="order-btn" style="margin-top:14px">สั่งซื้อทางแชท</button>
+      </div>
+    </div>`;
+  overlay.onclick = (e)=>{ if(e.target===overlay) closeProductDetail(overlay); };
+  overlay.querySelector('.detail-close').onclick = ()=>closeProductDetail(overlay);
+  overlay.querySelector('.order-btn').onclick = ()=>window.open(site.facebookLink,'_blank');
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+}
+function closeProductDetail(overlay){
+  overlay.remove();
+  document.body.style.overflow = '';
 }
 
 function filteredProducts(category){
@@ -559,7 +616,7 @@ function renderTextPage(main, key, title){
     <div class="page-block">
       <h2>${title}</h2>
       <p>${pg.text}</p>
-      <div class="page-images">${pg.images.map(u=>`<img src="${u}">`).join('')}</div>
+      <div class="page-images">${pg.images.map(u=>`<img src="${imgSrc(u)}">`).join('')}</div>
     </div>`;
 }
 
@@ -627,7 +684,7 @@ function renderAdminProducts(body){
   site.products.forEach(p=>{
     const row = document.createElement('div');
     row.className='product-admin-row';
-    row.innerHTML = `<img src="${p.image}"><div class="grow"><b>${p.name}</b><br>${p.code} · ${p.price} บาท</div>`;
+    row.innerHTML = `<img src="${imgSrc(p.image)}"><div class="grow"><b>${p.name}</b><br>${p.code} · ${p.price} บาท</div>`;
     const editBtn = document.createElement('button'); editBtn.className='small-btn'; editBtn.textContent='แก้ไข';
     editBtn.onclick = ()=>{ editingProductId=p.id; render(); };
     const delBtn = document.createElement('button'); delBtn.className='small-btn'; delBtn.textContent='ลบ';
